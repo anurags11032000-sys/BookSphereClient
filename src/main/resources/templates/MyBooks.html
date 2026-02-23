@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<h1>BookSphere</h1>
+	<hr>
+	<p>
+		Welcome: <b th:text="${session.user.name}"></b> &nbsp;&nbsp;&nbsp;
+		<a href='UserHome'>Home </a> &nbsp;&nbsp;&nbsp;
+		<a href='AllBooks'>Books </a> &nbsp;&nbsp;&nbsp;
+		<a href='MyBooks'>My Books </a> &nbsp;&nbsp;&nbsp;
+		<a href='Logout'>Logout </a>
+	</p>
+	<hr>
+	
+	<div th:if="${deleteResult}" class="alert success-alert">Book deleted successfully</div>
+	<div th:if="${deleteResult==false}" class="alert error-alert"> Failed to delete book</div>
+	
+	<h2>My Books</h2>
+	<section id="bookContainer">
+		<div th:each="book : ${books}">
+			<img th:src="@{/getCoverImage(id=${book.id})}" height="100px" />
+			<p>Name: <span th:text="${book.name}"></span> </p>
+			<p>Price: <span th:text="${book.price}"></span> </p>
+			<p>User: <span th:text="${book.user.name}"></span> </p>
+			
+			<!--<form th:action="@{/deleteBook(id=${book.id})}" method="post">
+				<button>Delete</button>
+			</form>-->
+			
+			<form action="deleteBook" method="post">
+				<input type="hidden" name="id" th:value="${book.id}" />
+				<button>Delete</button>
+			</form>
+			<a th:href="@{/EditBook(id=${book.id})}" class="pdf-btn download-btn">
+			    Edit Book
+			</a>
+		</div>
+	</section>
+</body>
+</html>

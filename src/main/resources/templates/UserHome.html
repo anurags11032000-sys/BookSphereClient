@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+	<div class="header">
+    <div class="app-title"> BookSphere</div>
+
+    <div class="nav-section">
+        <div class="welcome">
+            Welcome, <span th:text="${session.user.name}"></span>
+        </div>
+
+        <div class="nav-links">
+            <a href="UserHome">Home</a>
+            <a href="AllBooks">Books</a>
+            <a href="MyBooks">My Books</a>
+            <a href="Logout" class="logout-btn">Logout</a>
+        </div>
+    </div>
+</div>
+	
+	<div th:if="${msg}">
+	    
+	    <div th:if="${#strings.contains(msg,'Success')}" class="alert success-alert"> <span class="alert-icon"></span><span th:text="${msg}"></span></div>
+	
+	    <div th:if="${!#strings.contains(msg,'Success')}"class="alert error-alert"><span class="alert-icon"></span><span th:text="${msg}"></span></div>
+
+	</div>
+	<h3>Add New Book:</h3>
+	<form action="AddBook" method="post" enctype="multipart/form-data">
+		<label>Name:</label>
+		<input type='text' name='name' required /> <br><br>
+		<label>Price:</label>
+		<input type='text' pattern='[0-9]+' name='price' required /> <br><br>
+		<label>Cover Image:</label>
+		<div class="file-upload">
+		    <label class="upload-btn">
+		        Upload Image
+		        <input type="file" name="cImage" accept="image/*">
+		    </label>
+		    <span class="file-name">No file chosen</span>
+		</div>
+		
+		<label>Book PDF:</label>
+		<div class="file-upload">
+		    <label class="upload-btn ">
+		        Upload PDF
+		        <input type="file" name="ctn" accept=".pdf">
+		    </label>
+		    <span class="file-name">No file chosen</span>
+		</div>
+		<button>Add Book</button>
+	</form>
+	<script>
+		document.querySelectorAll('.file-upload input[type="file"]').forEach(input => {
+		    input.addEventListener('change', function () {
+		
+		        const fileNameSpan = this.closest('.file-upload').querySelector('.file-name');
+		
+		        if (this.files.length > 0) {
+		            fileNameSpan.textContent = this.files[0].name;
+		            fileNameSpan.style.opacity = "1";
+		        } else {
+		            fileNameSpan.textContent = "No file chosen";
+		            fileNameSpan.style.opacity = "0.7";
+		        }
+		    });
+		});
+</script> 
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<h1>BookSphere</h1>
+	<hr>
+	<p>
+		Welcome: <b th:text="${session.user.name}"></b> &nbsp;&nbsp;&nbsp;
+		<a href='UserHome'>Home </a> &nbsp;&nbsp;&nbsp;
+		<a href='AllBooks'>Books </a> &nbsp;&nbsp;&nbsp;
+		<a href='MyBooks'>My Books </a> &nbsp;&nbsp;&nbsp;
+		<a href='Logout'>Logout </a>
+	</p>
+	<hr>
+	
+	<h2>All Books</h2>
+	<div class="search-wrapper">
+	    <label>Name:</label>
+	    <input type="search"
+	           id="searchInput"
+	           placeholder="Search books..."
+	           autocomplete="off">
+	
+	    <div id="suggestions" class="suggestion-box"></div>
+	</div>
+	<section id="bookContainer">
+		<div th:each="book : ${books}"class="book-card" th:attr="data-name=${book.name}">
+			<img th:src="@{/getCoverImage(id=${book.id})}" height="100px" />
+			<p>Name: <span th:text="${book.name}"></span> </p>
+			<p>Price: <span th:text="${book.price}"></span> </p>
+			<p>User: <span th:text="${book.user.name}"></span> </p>
+			<div th:if="${book.content!=null}" class="pdf-actions">
+			    <a th:href='@{/viewPDF(id=${book.id})}'
+			       target="_blank"
+			       class="pdf-btn view-btn">
+			        👁 View PDF
+			    </a>
+			
+			    <a th:href='@{/downloadPDF(id=${book.id})}'
+			       class="pdf-btn download-btn">
+			        ⬇ Download
+			    </a>
+			</div>
+		</div>
+	</section>
+	<script>
+		const input = document.getElementById("searchInput");
+		const suggestionBox = document.getElementById("suggestions");
+		
+		input.addEventListener("keyup", function () {
+		
+		    const keyword = input.value.toLowerCase();
+		
+		    const books = document.querySelectorAll(".book-card");
+		
+		    // If empty → show all
+		    if (keyword.length === 0) {
+		        books.forEach(book => {
+		            book.style.display = "block";
+		        });
+		        return;
+		    }
+		
+		    // Filter books
+		    books.forEach(book => {
+		
+		        const name = book.getAttribute("data-name").toLowerCase();
+		
+		        if (name.includes(keyword)) {
+		            book.style.display = "block";
+		        } else {
+		            book.style.display = "none";
+		        }
+		    });
+		
+		});
+</script>
+</body>
+</html>

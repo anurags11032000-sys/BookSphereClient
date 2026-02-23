@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Book Details</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<nav class="top-navbar">
+	    <div class="brand"> BookSphere </div>
+	    <div class="nav-links">
+	        <a href="/">Home</a>
+	        <a href="login-signup" class="primary-btn">Login / SignUp</a>
+	    </div>
+   </nav>
+<section class="details-card">
+
+    <img th:src="@{/getCoverImage(id=${book.id})}" class="details-image"/>
+
+    <div class="details-info">
+        <h2 th:text="${book.name}"></h2>
+        <p class="price">₹ <span th:text="${book.price}"></span></p>
+        <p>Uploaded By: <span th:text="${book.user.name}"></span></p>
+
+    </div>
+
+</section>
+
+</body>
+</html>

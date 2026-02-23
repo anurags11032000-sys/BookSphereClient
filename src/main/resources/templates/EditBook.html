@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Edit Book</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<h1>BookSphere</h1>
+	
+	<p>
+		Welcome: <b th:text="${session.user.name}"></b> &nbsp;&nbsp;&nbsp;
+		<a href='UserHome'>Home </a> &nbsp;&nbsp;&nbsp;
+		<a href='AllBooks'>Books </a> &nbsp;&nbsp;&nbsp;
+		<a href='MyBooks'>My Books </a> &nbsp;&nbsp;&nbsp;
+		<a href='Logout'>Logout </a>
+	</p>
+	
+<h2>Edit Book</h2>
+<div th:if="${msg}">
+	    <div th:if="${#strings.contains(msg,'Success')}" class="alert success-alert"> <span class="alert-icon"></span><span th:text="${msg}"></span></div>
+	    <div th:if="${!#strings.contains(msg,'Success')}"class="alert error-alert"><span class="alert-icon"></span><span th:text="${msg}"></span></div>
+	</div>
+<!-- <section id="bookContainer">
+    <div>
+
+        SAME IMAGE
+        <img th:src="@{/getCoverImage(id=${book.id})}" height="100px" />
+
+        SAME DETAILS
+        <p>Name: <span th:text="${book.name}"></span></p>
+        <p>Price: <span th:text="${book.price}"></span></p>
+        <p>User: <span th:text="${book.user.name}"></span></p>
+
+        UPDATE IMAGE
+        <form action="updateImage" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:value="${book.id}" />
+            <input type="file" name="cImage" accept="image/*" required />
+            <button>Update Image</button>
+        </form>
+
+        UPDATE PDF
+        <form action="updatePdf" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" th:value="${book.id}" />
+            <input type="file" name="ctn" accept=".pdf" required />
+            <button>Update PDF</button>
+        </form>
+       <form action="updatePrice" method="post">
+		    <input type="hidden" name="id" th:value="${book.id}" />
+		
+		    <label>Price:</label>
+		    <input type="text" pattern="[0-9]+" name="price"
+		           th:value="${book.price}" required />
+		
+		    <br><br>
+		    <button>Update Price</button>
+		</form>
+    </div>
+</section> -->
+<section class="edit-wrapper">
+    <div class="edit-card">
+
+        <!-- Book Image -->
+        <img th:src="@{/getCoverImage(id=${book.id})}" class="edit-image" />
+
+        <!-- Book Details -->
+        <div class="book-info">
+            <p><strong>Name:</strong> <span th:text="${book.name}"></span></p>
+            <p><strong>Price:</strong> ₹ <span th:text="${book.price}"></span></p>
+            <p><strong>User:</strong> <span th:text="${book.user.name}"></span></p>
+        </div>
+
+        <!-- Update Image -->
+        <form action="updateImage" method="post" enctype="multipart/form-data" class="update-form">
+            <input type="hidden" name="id" th:value="${book.id}" />
+            
+            <label class="upload-btn">
+                Choose New Image
+                <input type="file" name="cImage" accept="image/*" required>
+            </label>
+
+            <button class="action-btn">Update Image</button>
+        </form>
+
+        <!-- Update PDF -->
+        <form action="updatePdf" method="post" enctype="multipart/form-data" class="update-form">
+            <input type="hidden" name="id" th:value="${book.id}" />
+            
+            <label class="upload-btn pdf-upload">
+                Choose New PDF
+                <input type="file" name="ctn" accept=".pdf" required>
+            </label>
+
+            <button class="action-btn">Update PDF</button>
+        </form>
+
+        <!-- Update Price -->
+        <form action="updatePrice" method="post" class="update-form">
+            <input type="hidden" name="id" th:value="${book.id}" />
+
+            <input type="text"
+                   pattern="[0-9]+"
+                   name="price"
+                   th:value="${book.price}"
+                   class="price-input"
+                   required />
+
+            <button class="action-btn">Update Price</button>
+        </form>
+
+    </div>
+</section>
+
+</body>
+</html>

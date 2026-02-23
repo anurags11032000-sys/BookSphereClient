@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+	<nav class="top-navbar">
+	    <div class="brand" > BookSphere </div>
+	    <div class="nav-links">
+	        <a href="/">Home</a>
+	        <a href="login-signup" class="primary-btn">Login / SignUp</a>
+	    </div>
+   </nav>
+	
+	<h3>Search Book:</h3>
+	<!-- <form action="SearchBook" method="post">
+		<label>Name:</label>
+		<input type="search" name="name" required="required" /> <br><br>
+		<button>Submit</button>
+	</form> -->
+	<div class="search-wrapper">
+	    <input type="search"
+	           id="searchInput"
+	           placeholder="Search books..."
+	           autocomplete="off">
+	
+	    <div id="suggestions" class="suggestion-box"></div>
+	</div>
+	<!-- <h2>Search Results:</h2> -->
+	<div id="bookDetailsContainer"></div>
+	<!-- <section id="bookContainer">
+		<div th:each="book : ${books}">
+			<img th:src="@{/getCoverImage(id=${book.id})}" height="100px" />
+			<p>Name: <span th:text="${book.name}"></span> </p>
+			<p>Price: <span th:text="${book.price}"></span> </p>
+			<p>User: <span th:text="${book.user.name}"></span> </p>
+			
+		</div>
+	</section> -->
+	<script>
+	const input = document.getElementById("searchInput");
+	const suggestionBox = document.getElementById("suggestions");
+	
+	let timeout = null;
+	
+	input.addEventListener("keyup", function () {
+	
+	    clearTimeout(timeout);
+	
+	    const keyword = input.value;
+	
+	    if (keyword.length < 1) {
+	        suggestionBox.innerHTML = "";
+	        return;
+	    }
+	
+	    // Debounce (wait 300ms before sending request)
+	    timeout = setTimeout(() => {
+	
+	        fetch("/liveSearch?keyword=" + keyword)
+	            .then(response => response.json())
+	            .then(data => {
+	
+	                suggestionBox.innerHTML = "";
+	
+	                data.forEach(book => {
+	
+	                    const div = document.createElement("div");
+	                    div.classList.add("suggestion-item");
+	
+	                    div.innerHTML = `
+	                        <img src="/getCoverImage?id=${book.id}" width="40">
+	                        <span>${book.name}</span>
+	                        <small>₹ ${book.price}</small>
+	                    `;
+	
+	                    // Click suggestion → fill input
+	                    div.onclick = function () {
+
+						    fetch("/getBookDetails?id=" + book.id)
+						        .then(response => response.json())
+						        .then(bookData => {
+						
+						            const container = document.getElementById("bookDetailsContainer");
+						
+						            container.innerHTML = `
+						                <div class="details-card">
+						                    <img src="/getCoverImage?id=${bookData.id}" class="details-image"/>
+						
+						                    <div class="details-info">
+						                        <h2>${bookData.name}</h2>
+						                        <p class="price">₹ ${bookData.price}</p>
+						                        <p>Uploaded By: ${bookData.user.name}</p>
+
+						                        <button class="primary-btn download-btn"
+						                                onclick="redirectToLogin()">
+						                            Download PDF
+						                        </button>
+												
+						                        
+						                    </div>
+						                </div>
+						            `;
+						
+						            suggestionBox.innerHTML = "";
+						        });
+						};
+	
+	                    suggestionBox.appendChild(div);
+	                });
+	            });
+	
+	    }, 300); // debounce time
+	});
+</script>
+<script>
+function redirectToLogin() {
+    window.location.href = "/login-signup";
+}
+</script>
+</body>
+</html>
