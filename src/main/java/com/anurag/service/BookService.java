@@ -24,7 +24,7 @@ import java.util.List;
 public class BookService {
 	
 	private RestTemplate restTemplate = new RestTemplate();
-	private final String URL = "http://booksphereserver-production.up.railway.app/";
+	private final String URL = "https://booksphereserver-production.up.railway.app/";
 	
 	public List<Book> searchBook(String name) {
 		String API = "booksByName/" + name;
