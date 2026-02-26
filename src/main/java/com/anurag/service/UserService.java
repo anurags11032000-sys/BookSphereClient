@@ -18,7 +18,7 @@ public class UserService {
 	
 	private final Book book;
 	private final RestTemplate restTemplate = new RestTemplate();
-	private final String URL = "http://localhost:1515/user/";
+	private final String URL = "http://booksphereserver-production.up.railway.app/user/";
 	
 	UserService(Book book){
 		this.book = book;
